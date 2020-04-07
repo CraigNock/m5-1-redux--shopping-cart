@@ -14,7 +14,7 @@ Please take a moment to poke at the existing components, and learn how the app i
 
 ![Demo](./__lecture/assets/initial.png)
 
-### Exercise 1: Initial Redux setup
+## Exercise 1: Initial Redux setup
 
 Before we do anything else, we need to get some basic Redux structure in place!
 
@@ -73,7 +73,7 @@ To review, a few things are happening here:
 
 Finally, create 1 more new file: `src/actions.js`. For now, it can remain empty.
 
-### Exercise 2: Cart styling
+## Exercise 2: Cart styling
 
 Take some time to create the components and styles we'll need for the shopping cart!
 
@@ -92,9 +92,9 @@ _HINT:_ If you'd rather not use the letter "X" for the close button, feel free t
 
 _HINT:_ If you want the input to have that "underline" style, set the background to transparent, and remove all but the bottom border.
 
-### Exercise 3: Adding and rendering cart items
+## Exercise 3: Adding and rendering cart items
 
-#### 3A: Getting state into the redux store
+## 3A: Getting state into the redux store
 
 Inside the empty `actions.js` file, let's add our first **action creator**:
 
@@ -212,7 +212,7 @@ This produces a new state object:
 
 ![Redux Devtools showing the effects of adding to cart](./__lecture/assets/cart-devtools.gif)
 
-#### 3B: Rendering stuff from the Redux store
+## 3B: Rendering stuff from the Redux store
 
 Next, in the `Cart` component you created, we need to _select_ that state and do something with it. The initial state will depend based on how you built the component, but here's the relevant Redux part:
 
@@ -249,7 +249,7 @@ export default function cartReducer(state = initialState, action) {
         ...state,
         [action.item.id] = {
           ...action.item,
-          quantity: 1,
+          quantity: 1, 
         }
       }
     }
@@ -277,7 +277,7 @@ const Cart = () => {
 
 At this point, you have an array full of store items. Mapping over data should be familiar territory at this point, so the instructions will leave you to it. You can consult previous workshops to see how we map over data in JSX.
 
-### Exercise 4: Removing items from the cart
+## Exercise 4: Removing items from the cart
 
 In Exercise 2, we added a little "x" icon to each cart item. Now we need to use it to remove items from the cart!
 
@@ -295,7 +295,7 @@ const stateCopy = { ...state }; // New object we CAN mutate
 delete stateCopy[someId];
 ```
 
-### Exercise 5: Quantities
+## Exercise 5: Quantities
 
 We want to let the user change the quantity of items in the cart, in two different ways:
 
@@ -315,7 +315,7 @@ _HINT:_ For interacting with the "Quantity" input, you'll want to create a new a
 
 _HINT:_ We want the "Total" shown in the bottom right to update immediately, so be sure to dispatch the action when the user types in the input (_onChange_).
 
-# Exercise 6: Devtools!
+## Exercise 6: Devtools!
 
 The Redux Devtools are awesome. Now that your app has a few different actions, it's time to experiment with them!
 
@@ -333,7 +333,7 @@ Start by performing a bunch of actions (add some items, update quantities, remov
 
 # Stretch Goals
 
-### Stretch Goal 1: Clear cart
+## Stretch Goal 1: Clear cart
 
 Add a new button, "Clear cart", which removes all items from the cart.
 
@@ -345,7 +345,7 @@ Some considerations:
 
 - The only button style right now is "primary": it's big and glossy and prominent. The "Clear cart" button should probably be a bit more subdued. Consider adding a "type" prop to the `Button` component. Maybe the button could have a translucent black background, or a transparent background with a subtle border? Consider looking at established design libraries like "Material UI" to see how they manage alternate button styles
 
-### Stretch Goal 2: Sales tax
+## Stretch Goal 2: Sales tax
 
 In a real e-commerce store, users might have to pay sales tax.
 

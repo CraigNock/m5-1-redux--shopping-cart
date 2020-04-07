@@ -132,6 +132,8 @@ Write selector functions to pluck out the right state.
 ---
 
 ```js
+import { useSelector } from 'react-redux';
+
 /*
 Our state shape:
 
@@ -153,7 +155,9 @@ Our state shape:
 */
 
 const FridgeContents = () => {
-  const fridgeItems = /* TODO */
+  const fridgeItems = useSelector((state) => {
+    return state.fridge;
+  });
 
   return (
     <div>
@@ -197,7 +201,10 @@ const App = () => {
   // We're going to watch OUR favourite movie,
   // in our BOYFRIEND's favourite genre.
   // (Terror at Jarry Park)
-  const movie = /* TODO */
+  const movie = /* TODO */ useSelector((state) => {
+    const genre = state.boyfriendFavouriteGenre;
+    return state.myFavouriteMovies[genre];
+  }
 
   return (
     <div>
@@ -226,11 +233,13 @@ Our state shape:
 const UserProfile = () => {
   // `streetAddress` should be formatted as:
   // "129 W. 81st St, Apartment 5A"
-  const streetAddress = /* TODO */
+  const streetAddress = /* TODO */ useSelector( state => {
+    return `${state.address.line1}, ${state.address.line2}`;
+  })
 
   return (
     <div>
-      You live at {address}.
+      You live at {streetAddress}.
     </div>
   );
 };
@@ -266,8 +275,11 @@ Our state shape:
 */
 
 const OnlineUsers = () => {
-  const myStatus = /* TODO */
-  const onlineUsers = /* TODO */
+  const myStatus = /* TODO */ useSelector((state) =>  state.myStatus)
+  const onlineUsers = /* TODO */ useSelector((state) => {
+    const online = (state.users).filter(user => user.online); //returns array even if empty
+    return online;
+  })
 
   return onlineUsers.map(user => (
     <div key={user.name}>
@@ -332,8 +344,9 @@ import {
 } from '../actions';
 
 const TodoList = () => {
+  //setup your hooks before you start      
   const todos = useSelector(state => state.todos);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); //this is essential so it can be used conditionally (think hook restrictions)
 
   return (
     <ul>
@@ -362,23 +375,33 @@ Wire in the action and dispatch it.
 ---
 
 ```js
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { pokeUser } from '../actions';
 
 const OnlineUsers = () => {
   // TODO: Something missing here...
+  const dispatch = useDispatch();//
+
 
   const onlineUsers = useSelector((state) => {
     return state.users.filter((user) => user.online);
   });
-
+//onclick function
   return onlineUsers.map((user) => (
     <div key={user.name}>
-      <button onClick={/* TODO */}>Message {user.name}</button>
+      <button onClick={ dispatch(pokeUser(user)) }>Message {user.name}</button>
     </div>
   ));
 };
+
+// actions.js
+  const pokeUser = user => ({
+    type: 'POKE-USER',
+    user,
+  });
+//() brackets because the return is implicit
+
 ```
 
 ---
@@ -395,7 +418,7 @@ const FridgeForm = () => {
   return (
     <form
       onSubmit={() => {
-        /* TODO */
+        dispatch(addItemToFridge(value));
       }}
     >
       <input type='text' onChange={(ev) => setValue(ev.target.value)} />
@@ -420,6 +443,7 @@ const Modal = () => {
     const handleKeydown = (ev) => {
       // TODO: Close modal when 'Escape' is pressed
       // (Hint: use ev.key)
+      if (ev.key === 'Escape') dispatch(dismissModal());
     };
 
     window.addEventListener('keydown', handleKeydown);
