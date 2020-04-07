@@ -7,6 +7,13 @@ import { removeItem, updateItem } from '../actions'
 const CartItem = ({ id, title, quantity }) => {
   const dispatch = useDispatch();
 //state for amount
+  const [amount, setAmount] = React.useState(quantity);
+
+  React.useEffect(()=>{
+    console.log('beef', quantity);
+    setAmount(quantity);
+  }, [quantity])
+
   return(
     <StyledDiv >
       <Name>
@@ -24,8 +31,10 @@ const CartItem = ({ id, title, quantity }) => {
           min='1'
           max="99"//doesnt work
           maxLength="2"//doesnt work
-          defaultValue={quantity} 
-          onChange={(ev)=> dispatch(updateItem(id, ev.target.value))}
+          value={amount} 
+          onChange={(ev)=> {
+            dispatch(updateItem(id, ev.target.value));
+          }}
         />
       </Quantity>
     </StyledDiv>

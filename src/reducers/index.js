@@ -10,7 +10,7 @@ const cartReducer = (state = initialState, action) => {
         ...state,
         [action.item.id]: {
           ...action.item,
-          quantity: (state[action.item.id]? state[action.item.id].quantity + 1 : 1),
+          quantity: (state[action.item.id]? Number(state[action.item.id].quantity) + 1 : 1),
         }
       };
     case 'REMOVE_ITEM':
@@ -25,7 +25,8 @@ const cartReducer = (state = initialState, action) => {
           quantity: action.newQuantity,
         }
       }
-
+    case 'CLEAR_ITEMS':
+      return {};
     default:
       return state;
   }

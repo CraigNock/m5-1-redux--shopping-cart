@@ -18,3 +18,7 @@ export const updateItem = (itemId, newQuantity) => {
   newQuantity,
   };
 };
+
+export const clearItems = () => ({
+  type: 'CLEAR_ITEMS',
+});

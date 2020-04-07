@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Button from './Button'
 import CartItem from './CartItem';
 
 import { getStoreItemArray } from '../reducers'
+import { clearItems } from '../actions';
 
 const Cart = () => {
   // const state = useSelector(state => state);
@@ -11,14 +14,25 @@ const Cart = () => {
   const storeItems = useSelector(getStoreItemArray);
   console.log(storeItems);
   //id, title, price, quantity
+  const dispatch = useDispatch();
 
-  // storeItems.reduce((sum, item) => {sum + item.quantiy * item.price }, 0)
+  const total = storeItems.reduce((sum, item) => {
+    return (sum + (item.quantity * item.price) )
+  }, 0);
 
   return(
     <StyledDiv>
       <TopDiv>
         <h1>Your Cart</h1>
-        <p>{storeItems.length} Items</p>
+        <p>
+          {storeItems.length} Items
+          <Button 
+            style={{width:'fit-content'}}
+            onClick={()=> dispatch(clearItems())}
+          >
+            Clear
+          </Button>
+        </p>
         <Items>
         {storeItems.map(item => {
           return ( 
@@ -33,8 +47,9 @@ const Cart = () => {
         </Items>
       </TopDiv>
       <Total>
-        <div>Total: $<span>{(0/100).toFixed(2)}</span></div>
-        <button type='submit'>Purchase</button>
+        <div>Total: $<span>{(total/100).toFixed(2)}</span></div>
+        {/* <button type='submit'>Purchase</button> */}
+        <Button style={{width:'fit-content'}}>Purchase</Button>
       </Total>
     </StyledDiv>
   )
@@ -43,6 +58,7 @@ const Cart = () => {
 const StyledDiv = styled.div`
   position: sticky;
   top: 0;
+  min-width: 20rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -59,32 +75,38 @@ const TopDiv = styled.div`
   p {
     margin: 0 0 3rem 1rem;
   }
+  button {
+    display: inline-block;
+    margin-left: 4rem;
+    background: darkgray;
+  }
 `;
 const Items = styled.div`
-  max-height:60vh;
+  max-height: 65vh;
   overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right:1rem;
+  
 `;
 
-
 const Total = styled.div`
-  bottom: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 1.2rem;
   span {
     font-weight: bold;
-    margin-left: .5rem;
+    margin: 0 1rem 0 .5rem;
   };
-  button {
+  /* button {
     padding: .5rem 2rem;
     margin: 0 1rem;
     color: whitesmoke;
-    background: palevioletred;
+    background: #ff406e;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-  }
+  } */
 `;
 
 
